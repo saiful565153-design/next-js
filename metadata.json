@@ -1,6 +1,6 @@
 {
-  "name": "Next.js Bengali Website",
-  "description": "একটি আধুনিক এবং দৃষ্টিনন্দন Next.js ওয়েবসাইট যা সম্পূর্ণ বাংলায় তৈরি।",
+  "name": "Gaming Topup BD",
+  "description": "সবচেয়ে দ্রুত এবং নিরাপদ গেম টপ-আপ ওয়েবসাইট। ফ্রি ফায়ার ডায়মন্ড, পাবজি ইউসি এবং অন্যান্য গেমের টপ-আপ করুন সহজে বিকাশ, নগদ ও রকেটের মাধ্যমে।",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

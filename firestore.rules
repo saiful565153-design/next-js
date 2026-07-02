@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "saiful565153@gmail.com" || 
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    match /notes/{noteId} {
+      allow read, delete: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 200
+        && request.resource.data.content is string
+        && request.resource.data.content.size() <= 10000
+        && request.resource.data.createdAt == request.time;
+    }
+
+    match /orders/{orderId} {
+      allow get: if isSignedIn() && (isOwner(resource.data.userId) || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && isAdmin();
+      
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userEmail == request.auth.token.email
+        && request.resource.data.gameName is string && request.resource.data.gameName.size() <= 100
+        && request.resource.data.gameId is string && request.resource.data.gameId.size() <= 100
+        && request.resource.data.packageName is string && request.resource.data.packageName.size() <= 150
+        && request.resource.data.price is number && request.resource.data.price >= 0 && request.resource.data.price <= 100000
+        && request.resource.data.paymentMethod is string && request.resource.data.paymentMethod.size() <= 50
+        && request.resource.data.senderNumber is string && request.resource.data.senderNumber.size() <= 50
+        && request.resource.data.transactionId is string && request.resource.data.transactionId.size() <= 100
+        && request.resource.data.status == "Pending"
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isSignedIn() 
+        && isAdmin()
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.gameName == resource.data.gameName
+        && request.resource.data.gameId == resource.data.gameId
+        && request.resource.data.packageName == resource.data.packageName
+        && request.resource.data.price == resource.data.price
+        && request.resource.data.paymentMethod == resource.data.paymentMethod
+        && request.resource.data.senderNumber == resource.data.senderNumber
+        && request.resource.data.transactionId == resource.data.transactionId
+        && request.resource.data.status is string 
+        && (request.resource.data.status == "Pending" || request.resource.data.status == "Processing" || request.resource.data.status == "Completed" || request.resource.data.status == "Cancelled");
+    }
+  }
+}

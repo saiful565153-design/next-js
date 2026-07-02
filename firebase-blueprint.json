@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "Note": {
+      "title": "Note",
+      "description": "User notes",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User UID of the creator"
+        },
+        "title": {
+          "type": "string",
+          "description": "Note title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Note content"
+        },
+        "createdAt": {
+          "type": "object",
+          "format": "google.protobuf.Timestamp",
+          "description": "Timestamp of creation"
+        }
+      },
+      "required": ["userId", "title", "content", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Gaming topup order",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User UID of the buyer"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Email of the buyer"
+        },
+        "gameName": {
+          "type": "string",
+          "description": "Name of the game (e.g., Free Fire, PUBG)"
+        },
+        "gameId": {
+          "type": "string",
+          "description": "Game Player UID or Character ID"
+        },
+        "packageName": {
+          "type": "string",
+          "description": "Selected topup pack"
+        },
+        "price": {
+          "type": "number",
+          "description": "Price in BDT"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "bKash, Nagad, Rocket, etc."
+        },
+        "senderNumber": {
+          "type": "string",
+          "description": "Sender mobile banking account number"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "Payment Transaction ID"
+        },
+        "status": {
+          "type": "string",
+          "description": "Pending, Processing, Completed, Cancelled"
+        },
+        "createdAt": {
+          "type": "object",
+          "format": "google.protobuf.Timestamp",
+          "description": "Timestamp of order creation"
+        }
+      },
+      "required": ["userId", "userEmail", "gameName", "gameId", "packageName", "price", "paymentMethod", "senderNumber", "transactionId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "Collection of user notes"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of game topup orders"
+    }
+  }
+}
