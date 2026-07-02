@@ -1,0 +1,6 @@
+{
+  "name": "Next.js Bengali Website",
+  "description": "একটি আধুনিক এবং দৃষ্টিনন্দন Next.js ওয়েবসাইট যা সম্পূর্ণ বাংলায় তৈরি।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
